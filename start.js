@@ -1,17 +1,17 @@
-// execSync allows us to run system commands synchronously
-const { execSync } = require('child_process');
+// exec allows us to run cmd commands in code
+const { exec } = require('child_process');
 
 // process.env.PORT is defined by Heroku environment. Use 3200 as fallback if outside of Heroku.
 const port = process.env.PORT || 3200;
+console.log('Port: ' + port)
 
-// Same as runnin "npm run serve" in terminal
-execSync(`npm run serve -- -l ${ port} ./build`, (err, stdout, stderr) => {
+const cmdStr = `.\\node_modules\\.bin\\serve -l ${ port} ./build`
+
+console.log(cmdStr)
+
+// Same as running ".\node_modules\.bin\serve -l 3200 ./build" in cmd
+exec(cmdStr, (err) => {
   if (err) {
-    // node couldn't execute the command
-    return;
+    console.error('Something went wrong!', err)
   }
-
-  // the *entire* stdout and stderr (buffered)
-  console.log(`${stdout}`);
-  console.log(`${stderr}`);
 });
